@@ -1,16 +1,16 @@
 package sample.plugin;
 
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * Goal which touches a timestamp file.
@@ -19,6 +19,10 @@ import java.io.IOException;
 public class MyMojo
     extends AbstractMojo
 {
+
+    @Component
+    private MyComponent myComponent;
+
     /**
      * Location of the file.
      */
@@ -45,6 +49,8 @@ public class MyMojo
             w.write( """
                 Java 17 touch.txt
                 """ );
+
+            System.out.println("Root directory: " + myComponent.getExecutionRootDirectory());
         }
         catch ( IOException e )
         {
